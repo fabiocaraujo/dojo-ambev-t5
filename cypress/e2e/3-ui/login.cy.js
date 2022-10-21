@@ -20,8 +20,8 @@ describe('Funcionalidade: Tela de login', () => {
     */
 
 it('Deve fazer login com sucesso', () => {
-    cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').type('fabio.araujo@t5.com')
-    cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type('teste@123')
+    cy.get('[data-test="login-email"]').type('fabio.araujo@t5.com')
+    cy.get('[data-test="login-password"]').type('teste@123')
     cy.get('[data-test="login-submit"]').click()
     cy.get('[data-test="dashboard-welcome"]').should('contain', 'Bem-vindo Fábio Araújo')
 });
@@ -58,6 +58,12 @@ it('Quando digitar senha inválida deve aparecer mensagem de erro', () => {
     cy.get('[data-test="alert"]').should('contain', 'Credenciais inválidas')
 });
     
+});
+
+it.only('Deve fazer login com sucesso usando app action', () => {
+    cy.loginApp()
+    cy.visit('editar-perfil')
+    //cy.get('[data-test="dashboard-welcome"]').should('contain', 'Bem-vindo')
 });
 
 

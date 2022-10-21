@@ -25,27 +25,42 @@
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
 Cypress.Commands.add('login', (email, senha) => {
-    cy.get('[data-test="login-email"] > .MuiInputBase-root > .MuiInputBase-input').type(email)
-    cy.get('[data-test="login-password"] > .MuiInputBase-root > .MuiInputBase-input').type(senha)
-    cy.get('[data-test="login-submit"]').click()
- })
+  cy.get('[data-test="login-email"]').type(email)
+  cy.get('[data-test="login-password"]').type(senha)
+  cy.get('[data-test="login-submit"]').click()
+})
 
- import user from "../fixtures/usuario.json";
+import user from "../fixtures/usuario.json";
 
- Cypress.Commands.add('token', () => {
-    cy.request({
-        method: 'POST',
-        url: 'api/auth',
-        body: {
-            "email": user.email,
-            "password": user.senha
-          }
-    }).then((response) => {
-            expect(response.status).to.equal(200) //opcional
-            return response.body.jwt
-    })
-
+Cypress.Commands.add('token', () => {
+  cy.request({
+    method: 'POST',
+    url: 'api/auth',
+    body: {
+      "email": user.email,
+      "password": user.senha
+    }
+  }).then((response) => {
+    expect(response.status).to.equal(200) //opcional
+    return response.body.jwt
   })
+
+})
+
+Cypress.Commands.add('loginApp', () => {
+  cy.request({
+    method: 'POST',
+    url: 'api/auth',
+    body: {
+      "email": user.email,
+      "password": user.senha
+    }
+  }).then((response) => {
+    cy.setCookie('jwt' , response.body.jwt)
+    window.localStorage.setItem('region', 'BRA-SP')
+    window.sessionStorage.setItem('Exemplo', 'Valor qualquer')
+  })
+})
 
 
 
